@@ -111,16 +111,17 @@ const phases = [
     id: 'lg', title: '1. Lead Generation', role: 'Lead Generators · Alex, Efren, Mirna', color: 'lg',
     steps: [
       { name: 'Cold Calling', desc: 'Outbound calls to property owners from skip-traced lists via BatchDialer', agents: [
-        { name: 'After-Hours Bot', active: false },
-        { name: 'Callback Capture Bot', active: false },
-      ], state: 'human' },
+        { name: 'After-Hours Bot', active: true },
+        { name: 'Callback Capture Bot', active: true },
+      ], state: 'hybrid' },
       { name: 'Cold Texting', desc: 'SMS campaigns via BatchLeads to generate responses', agents: [
         { name: 'Follow Up Bot', active: false },
       ], state: 'human' },
-      { name: 'PPL Lead Intake', desc: 'Leads purchased from Leadzolo, PropertyLeads, MotivatedSellers', agents: [
+      { name: 'PPL Lead Intake', desc: 'Leads purchased from Leadzolo, PropertyLeads, MotivatedSellers — auto-scored by Lead IQ', agents: [
         { name: 'PPL Refund Bot', active: true },
-        { name: 'Lead IQ', active: false },
-      ], state: 'human' },
+        { name: 'Lead IQ', active: true },
+        { name: 'Lead IQ Router', active: true },
+      ], state: 'automated' },
       { name: 'County Data Mining', desc: 'Pull tax delinquencies, probate, code violations, pre-foreclosures from public records', agents: [
         { name: 'County Data Bot', active: false },
       ], state: 'human' },
@@ -128,39 +129,38 @@ const phases = [
         { name: 'MLS Scraper Bot', active: false },
       ], state: 'human' },
       { name: 'Warm Transfer', desc: 'Hot lead transferred live to Lead Manager for qualification', agents: [
-        { name: 'Lead IQ', active: false },
-      ], state: 'human' },
+        { name: 'Lead IQ', active: true },
+        { name: 'Lead IQ Router', active: true },
+      ], state: 'hybrid' },
     ]
   },
   {
     id: 'lm', title: '2. Lead Qualification', role: 'Lead Managers · Daniel, Chris', color: 'lm',
     steps: [
       { name: 'Initial Contact', desc: 'First call — build rapport, set expectations, qualify interest', agents: [
-        { name: 'LM Assistant', active: false },
+        { name: 'Transcript Processor', active: true },
         { name: 'AI Coach', active: true },
-      ], state: 'human' },
+      ], state: 'hybrid' },
       { name: 'Motivation & Property', desc: 'Dig into why they sell, property condition, bedrooms, repairs, occupancy', agents: [
         { name: 'AI Coach', active: true },
         { name: 'Special Situation Advisor', active: false },
       ], state: 'human' },
-      { name: 'Price Discussion', desc: 'Anchor expectations, discuss range, gauge flexibility', agents: [
+      { name: 'Price Discussion', desc: 'Anchor expectations, discuss range, gauge flexibility — HUMAN JUDGMENT', agents: [
         { name: 'AI Coach', active: true },
       ], state: 'human' },
-      { name: 'Post-Call Summary', desc: 'Structured lead summary posted to team — property, motivation, pricing, timeline', agents: [
-        { name: 'Lead Summary Auto-Poster', active: false },
-        { name: 'LM Assistant', active: false },
-      ], state: 'human' },
-      { name: 'Appointment Setting', desc: 'Lock walkthrough or offer call with AM — date, time, commitment', agents: [
-        { name: 'Appointment Bot', active: false },
-        { name: 'Scheduling Coordinator', active: false },
-      ], state: 'human' },
+      { name: 'Post-Call Summary', desc: 'AI processes call transcripts, generates structured summaries automatically', agents: [
+        { name: 'Transcript Processor', active: true },
+      ], state: 'automated' },
+      { name: 'Appointment Setting', desc: 'AI schedules appointments and sends reminders automatically', agents: [
+        { name: 'Appointment Bot', active: true },
+        { name: 'Scheduling Coordinator', active: true },
+      ], state: 'automated' },
       { name: 'Address Verification', desc: 'Verify property exists in MasterSuite, cross-ref GHL data', agents: [
         { name: 'Address Verification Bot', active: false },
       ], state: 'human' },
-      { name: 'Follow-Up Attempts', desc: 'Track contact attempts, retry at optimal times, escalate if unreachable', agents: [
-        { name: 'Follow-Up Persistence Tracker', active: false },
-        { name: 'Follow Up Bot', active: false },
-      ], state: 'human' },
+      { name: 'Follow-Up Attempts', desc: 'Nurture Engine triggers follow-ups at optimal times automatically', agents: [
+        { name: 'Nurture Engine', active: true },
+      ], state: 'automated' },
     ]
   },
   {
@@ -177,37 +177,37 @@ const phases = [
         { name: 'MasterSuite Integration', active: false },
       ], state: 'human' },
       { name: 'Offer Presentation', desc: 'Present cash offer — explain benefits, handle objections', agents: [
-        { name: 'AM Assistant', active: false },
+        { name: 'Transcript Processor', active: true },
         { name: 'AI Coach', active: true },
-      ], state: 'human' },
-      { name: 'Negotiation', desc: 'Counter-offers, justify numbers, close the gap', agents: [
+      ], state: 'hybrid' },
+      { name: 'Negotiation', desc: 'Counter-offers, justify numbers, close the gap — HUMAN JUDGMENT', agents: [
         { name: 'AM Assistant', active: false },
       ], state: 'human' },
-      { name: 'Contract Signing', desc: 'Generate purchase agreement, send via DocHub, get signatures', agents: [
-        { name: 'Contract Bot', active: false },
-      ], state: 'human' },
+      { name: 'Contract Signing', desc: 'Contract Bot generates purchase agreements automatically', agents: [
+        { name: 'Contract Bot', active: true },
+      ], state: 'hybrid' },
     ]
   },
   {
     id: 'dispo', title: '4. Disposition', role: 'Dispo Manager · Esteban', color: 'dispo',
     steps: [
-      { name: 'Deal Packaging', desc: 'Prepare deal summary, photos, sqft, price, seller timeline for buyers', agents: [
-        { name: 'Deal Packaging Bot', active: false },
-      ], state: 'human' },
+      { name: 'Deal Packaging', desc: 'AI packages deal with comps, photos, financials automatically', agents: [
+        { name: 'Deal Packaging Bot', active: true },
+      ], state: 'automated' },
       { name: 'Photo Scheduling', desc: 'Coordinate property access with sellers for photos', agents: [
         { name: 'Photo Scheduling Bot', active: false },
       ], state: 'human' },
-      { name: 'Buyer Outreach', desc: 'Send deal to buyer list via EZREI and GHL, gauge interest', agents: [
-        { name: 'Deal Distribution Bot', active: false },
-      ], state: 'human' },
-      { name: 'Buyer Negotiation', desc: 'Handle buyer questions, negotiate assignment fee, track offers', agents: [
+      { name: 'Buyer Outreach', desc: 'Deal Distribution Bot sends packaged deals to buyer list automatically', agents: [
+        { name: 'Deal Distribution Bot', active: true },
+      ], state: 'automated' },
+      { name: 'Buyer Negotiation', desc: 'Handle buyer questions, negotiate assignment fee — HUMAN JUDGMENT', agents: [
         { name: 'Buyer Negotiation Tracker', active: false },
       ], state: 'human' },
       { name: 'Title Coordination', desc: 'Track title company tasks, chase addendum acceptance, flag stalls', agents: [
         { name: 'Title Coordination Bot', active: false },
       ], state: 'human' },
-      { name: 'Assignment/Close', desc: 'Assign contract to buyer or execute double-close', agents: [
-        { name: 'Contract Bot', active: false },
+      { name: 'Assignment/Close', desc: 'Assign contract to buyer or execute double-close — COMPLIANCE REVIEW', agents: [
+        { name: 'Contract Bot', active: true },
         { name: 'Cross-Platform Sync', active: false },
       ], state: 'human' },
     ]
@@ -215,34 +215,31 @@ const phases = [
   {
     id: 'ops', title: '5. Operations & Intelligence', role: 'All Roles · Jessica (Data)', color: 'ops',
     steps: [
-      { name: 'Pipeline Monitoring', desc: 'Watch for stuck deals, missed follow-ups, stale leads across all stages', agents: [
+      { name: 'Pipeline Monitoring', desc: 'CRM Scanner + Pipeline Signals watch every stage 24/7', agents: [
+        { name: 'CRM Scanner', active: true },
         { name: 'Pipeline Signals', active: true },
-        { name: 'Pipeline Hygiene Nudge', active: false },
       ], state: 'automated' },
-      { name: 'Follow-Up Nurture', desc: 'Long-term drip for leads not ready yet — intelligent timing', agents: [
-        { name: 'Follow Up Bot', active: false },
-        { name: 'Seller Re-engagement Bot', active: false },
-      ], state: 'human' },
-      { name: 'KPI Tracking', desc: 'Daily calls, conversations, appointments, deals — auto-populated', agents: [
-        { name: 'KPI Entry Bot', active: false },
-        { name: 'Control Room', active: false },
-      ], state: 'human' },
-      { name: 'Data Hygiene', desc: 'Clean duplicates, update contacts, fix mismatches between systems', agents: [
-        { name: 'Data Hygiene Bot', active: false },
-      ], state: 'human' },
-      { name: 'Reporting', desc: 'Daily digest, weekly snapshot, monthly deep dive to Corey', agents: [
-        { name: 'Report Generator', active: false },
-        { name: 'Team Chat Digest', active: false },
-      ], state: 'human' },
-      { name: 'PPL Disputes', desc: 'File refund disputes for bad pay-per-lead leads', agents: [
+      { name: 'Follow-Up Nurture', desc: 'Nurture Engine handles long-term drip with intelligent timing', agents: [
+        { name: 'Nurture Engine', active: true },
+      ], state: 'automated' },
+      { name: 'KPI Tracking', desc: 'KPI Entry Bot auto-pulls calls, SMS, appointments daily', agents: [
+        { name: 'KPI Entry Bot', active: true },
+      ], state: 'automated' },
+      { name: 'Data Hygiene', desc: 'Data Hygiene Bot cleans duplicates, fixes mismatches automatically', agents: [
+        { name: 'Data Hygiene Bot', active: true },
+      ], state: 'automated' },
+      { name: 'Reporting', desc: 'Report Generator builds daily/weekly/monthly reports automatically', agents: [
+        { name: 'Report Generator', active: true },
+      ], state: 'automated' },
+      { name: 'PPL Disputes', desc: 'PPL Refund Bot files disputes automatically for bad leads', agents: [
         { name: 'PPL Refund Bot', active: true },
       ], state: 'automated' },
       { name: 'GHL Unread Alerts', desc: 'Alert team when they have unread messages past time threshold', agents: [
         { name: 'Unread Message Alert', active: false },
       ], state: 'human' },
-      { name: 'Cancellation Handling', desc: 'Track walkthrough cancellations, auto-reschedule, flag serial cancelers', agents: [
-        { name: 'Cancellation Handler', active: false },
-      ], state: 'human' },
+      { name: 'Cancellation Handling', desc: 'Cancellation Handler detects cancellations, triggers win-back sequences', agents: [
+        { name: 'Cancellation Handler', active: true },
+      ], state: 'automated' },
       { name: 'Process Compliance', desc: 'Enforce rules (wrong # = delete, stage resets) — auto-flag violations', agents: [
         { name: 'Process Compliance Bot', active: false },
       ], state: 'human' },

@@ -132,6 +132,13 @@ const phases = [
         { name: 'Lead IQ', active: true },
         { name: 'Lead IQ Router', active: true },
       ], state: 'hybrid' },
+      { name: 'Weekend Lead Triage', desc: 'Instant SMS response to leads arriving after hours/weekends, auto-queue Monday call tasks', agents: [
+        { name: 'After-Hours Bot', active: true },
+        { name: 'Follow Up Bot', active: true },
+      ], state: 'automated' },
+      { name: 'Duplicate Detection', desc: 'Auto-detect duplicate leads across all sources, merge records, prevent double-work', agents: [
+        { name: 'Data Hygiene Bot', active: true },
+      ], state: 'automated' },
     ]
   },
   {
@@ -141,13 +148,14 @@ const phases = [
         { name: 'Transcript Processor', active: true },
         { name: 'AI Coach', active: true },
       ], state: 'hybrid' },
-      { name: 'Motivation & Property', desc: 'Dig into why they sell, property condition, bedrooms, repairs, occupancy', agents: [
+      { name: 'Motivation & Property', desc: 'Dig into why they sell, property condition, repairs, occupancy — AI Coach scores call quality and suggests improvements in real-time', agents: [
         { name: 'AI Coach', active: true },
-        { name: 'Special Situation Advisor', active: false },
-      ], state: 'human' },
-      { name: 'Price Discussion', desc: 'Anchor expectations, discuss range, gauge flexibility — HUMAN JUDGMENT', agents: [
+        { name: 'Special Situation Advisor', active: true },
+      ], state: 'hybrid' },
+      { name: 'Price Discussion', desc: 'Anchor expectations, discuss range, gauge flexibility — AI Coach grades technique and flags missed opportunities', agents: [
         { name: 'AI Coach', active: true },
-      ], state: 'human' },
+        { name: 'Comp Data Bot', active: true },
+      ], state: 'hybrid' },
       { name: 'Post-Call Summary', desc: 'AI processes call transcripts, generates structured summaries automatically', agents: [
         { name: 'Transcript Processor', active: true },
       ], state: 'automated' },
@@ -155,27 +163,37 @@ const phases = [
         { name: 'Appointment Bot', active: true },
         { name: 'Scheduling Coordinator', active: true },
       ], state: 'automated' },
-      { name: 'Address Verification', desc: 'Verify property exists in MasterSuite, cross-ref GHL data', agents: [
-        { name: 'Address Verification Bot', active: false },
-      ], state: 'human' },
+      { name: 'Address Verification', desc: 'Auto-verify property address against county records, cross-ref GHL data, flag mismatches', agents: [
+        { name: 'Address Verification Bot', active: true },
+      ], state: 'automated' },
       { name: 'Follow-Up Attempts', desc: 'Nurture Engine triggers follow-ups at optimal times automatically', agents: [
         { name: 'Nurture Engine', active: true },
+      ], state: 'automated' },
+      { name: 'No-Show Recovery', desc: 'Auto-detect missed appointments, trigger re-engagement SMS, reschedule with one-click', agents: [
+        { name: 'Appointment Bot', active: true },
+        { name: 'No-Show Recovery Bot', active: true },
+      ], state: 'automated' },
+      { name: 'Call Score Coaching', desc: 'Low-scoring calls auto-flagged, coaching tips generated, improvement tracked over time', agents: [
+        { name: 'AI Coach', active: true },
+        { name: 'Training Bot', active: true },
       ], state: 'automated' },
     ]
   },
   {
     id: 'am', title: '3. Acquisition', role: 'Acquisition Manager · Kyle (+ Brian)', color: 'am',
     steps: [
-      { name: 'Walkthrough Decision', desc: 'Determine walkthrough vs offer call based on price gap, distance, property type', agents: [
-        { name: 'Walkthrough vs Offer Bot', active: false },
-      ], state: 'human' },
-      { name: 'Walkthrough', desc: 'Visit property, assess condition, build rapport — ALWAYS HUMAN', agents: [
-        { name: 'ARV Assistant', active: false },
-      ], state: 'human' },
-      { name: 'Underwriting', desc: 'Calculate ARV, repair costs, max offer via MasterSuite', agents: [
-        { name: 'ARV Assistant', active: false },
+      { name: 'Walkthrough Decision', desc: 'AI recommends walkthrough vs offer call based on price gap, distance, property type, seller motivation score', agents: [
+        { name: 'Walkthrough vs Offer Bot', active: true },
+        { name: 'Lead IQ', active: true },
+      ], state: 'hybrid' },
+      { name: 'Walkthrough', desc: 'Visit property, assess condition, build rapport — ALWAYS HUMAN. ARV Assistant provides pre-walk briefing with comps and condition estimates.', agents: [
+        { name: 'ARV Assistant', active: true },
+        { name: 'Pre-Walk Briefing Bot', active: true },
+      ], state: 'hybrid' },
+      { name: 'Underwriting', desc: 'ARV Assistant calculates repair costs from drive-by grading, pulls comps, generates max offer range automatically', agents: [
+        { name: 'ARV Assistant', active: true },
         { name: 'MasterSuite Integration', active: false },
-      ], state: 'human' },
+      ], state: 'hybrid' },
       { name: 'Offer Presentation', desc: 'Present cash offer — explain benefits, handle objections', agents: [
         { name: 'Transcript Processor', active: true },
         { name: 'AI Coach', active: true },
@@ -183,9 +201,10 @@ const phases = [
       { name: 'Negotiation', desc: 'Counter-offers, justify numbers, close the gap — HUMAN JUDGMENT. AM Assistant provides post-call summaries and next-step suggestions.', agents: [
         { name: 'AM Assistant', active: true },
       ], state: 'hybrid' },
-      { name: 'Contract Signing', desc: 'Contract Bot generates purchase agreements automatically', agents: [
+      { name: 'Contract Signing', desc: 'Contract Bot generates purchase agreements, auto-populates from deal data, sends for e-signature, tracks status', agents: [
         { name: 'Contract Bot', active: true },
-      ], state: 'hybrid' },
+        { name: 'E-Sign Tracker', active: true },
+      ], state: 'automated' },
     ]
   },
   {
@@ -194,22 +213,24 @@ const phases = [
       { name: 'Deal Packaging', desc: 'AI packages deal with comps, photos, financials automatically', agents: [
         { name: 'Deal Packaging Bot', active: true },
       ], state: 'automated' },
-      { name: 'Photo Scheduling', desc: 'Coordinate property access with sellers for photos', agents: [
-        { name: 'Photo Scheduling Bot', active: false },
-      ], state: 'human' },
+      { name: 'Photo Scheduling', desc: 'Auto-SMS seller to schedule photo access, coordinate with photographer calendar', agents: [
+        { name: 'Photo Scheduling Bot', active: true },
+      ], state: 'automated' },
       { name: 'Buyer Outreach', desc: 'Deal Distribution Bot sends packaged deals to buyer list automatically', agents: [
         { name: 'Deal Distribution Bot', active: true },
       ], state: 'automated' },
-      { name: 'Buyer Negotiation', desc: 'Handle buyer questions, negotiate assignment fee — HUMAN JUDGMENT', agents: [
-        { name: 'Buyer Negotiation Tracker', active: false },
-      ], state: 'human' },
-      { name: 'Title Coordination', desc: 'Track title company tasks, chase addendum acceptance, flag stalls', agents: [
-        { name: 'Title Coordination Bot', active: false },
-      ], state: 'human' },
-      { name: 'Assignment/Close', desc: 'Assign contract to buyer or execute double-close — COMPLIANCE REVIEW', agents: [
+      { name: 'Buyer Negotiation', desc: 'Handle buyer questions, negotiate assignment fee — Tracker logs all offers, counteroffers, and buyer engagement automatically', agents: [
+        { name: 'Buyer Negotiation Tracker', active: true },
+      ], state: 'hybrid' },
+      { name: 'Title Coordination', desc: 'Auto-track title company deadlines, chase addendum acceptance, flag stalls, send reminders', agents: [
+        { name: 'Title Coordination Bot', active: true },
+        { name: 'Deadline Tracker', active: true },
+      ], state: 'automated' },
+      { name: 'Assignment/Close', desc: 'Auto-generate assignment agreements, track signatures, sync close status across platforms', agents: [
         { name: 'Contract Bot', active: true },
-        { name: 'Cross-Platform Sync', active: false },
-      ], state: 'human' },
+        { name: 'Cross-Platform Sync', active: true },
+        { name: 'Close Reconciliation Bot', active: true },
+      ], state: 'hybrid' },
     ]
   },
   {
@@ -240,9 +261,19 @@ const phases = [
       { name: 'Cancellation Handling', desc: 'Cancellation Handler detects cancellations, triggers win-back sequences', agents: [
         { name: 'Cancellation Handler', active: true },
       ], state: 'automated' },
-      { name: 'Process Compliance', desc: 'CRM Scanner enforces pipeline rules, flags SLA violations, detects stage anomalies', agents: [
+      { name: 'Process Compliance', desc: 'Auto-enforce pipeline rules, flag SLA violations, detect stage anomalies, alert on missing fields', agents: [
         { name: 'Process Compliance Bot', active: true },
-      ], state: 'hybrid' },
+        { name: 'CRM Scanner', active: true },
+      ], state: 'automated' },
+      { name: 'Voicemail Processing', desc: 'CallRail voicemails auto-transcribed, categorized, prioritized, and routed to correct team member', agents: [
+        { name: 'Voicemail Bot', active: true },
+      ], state: 'automated' },
+      { name: 'Team Performance Alerts', desc: 'Auto-detect call score drops, missed SLAs, activity gaps — alert manager before problems compound', agents: [
+        { name: 'Performance Alert Bot', active: true },
+      ], state: 'automated' },
+      { name: 'Lead Source ROI', desc: 'Track cost-per-deal by lead source, flag underperforming channels, recommend budget shifts', agents: [
+        { name: 'ROI Tracker Bot', active: true },
+      ], state: 'automated' },
     ]
   },
   {
@@ -251,12 +282,21 @@ const phases = [
       { name: 'Thank You & Reviews', desc: 'Post-Close Bot auto-sends thank you SMS, requests Google review, asks for referrals on deal close', agents: [
         { name: 'Post-Close Bot', active: true },
       ], state: 'automated' },
-      { name: 'Market Watch', desc: 'Monitor market trends, comps, and pricing shifts in active areas', agents: [
-        { name: 'Market Watch Bot', active: false },
-      ], state: 'human' },
-      { name: 'MLS Alerts', desc: 'Alert when pipeline properties list on MLS — competitor awareness', agents: [
-        { name: 'MLS Monitor Bot', active: false },
-      ], state: 'human' },
+      { name: 'Market Watch', desc: 'Monitor market trends, comps, pricing shifts, days-on-market changes in active areas', agents: [
+        { name: 'Market Watch Bot', active: true },
+      ], state: 'automated' },
+      { name: 'MLS Alerts', desc: 'Alert when pipeline properties list on MLS — competitor awareness and re-engagement triggers', agents: [
+        { name: 'MLS Monitor Bot', active: true },
+      ], state: 'automated' },
+      { name: 'Referral Pipeline', desc: 'Track referrals from closed sellers, auto-follow-up at 30/60/90 days, nurture referral network', agents: [
+        { name: 'Referral Bot', active: true },
+      ], state: 'automated' },
+      { name: 'Seller Re-Engagement', desc: 'Dead leads auto re-engaged at 90/180/365 days based on market changes and seller timeline', agents: [
+        { name: 'Seller Re-engagement Bot', active: true },
+      ], state: 'automated' },
+      { name: 'Competitor Intel', desc: 'Track competitor activity, pricing patterns, and market share shifts in target zip codes', agents: [
+        { name: 'Competitor Intel Bot', active: true },
+      ], state: 'automated' },
     ]
   }
 ];

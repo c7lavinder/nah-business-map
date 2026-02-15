@@ -114,9 +114,9 @@ const phases = [
         { name: 'After-Hours Bot', active: true },
         { name: 'Callback Capture Bot', active: true },
       ], state: 'hybrid' },
-      { name: 'Cold Texting', desc: 'SMS campaigns via BatchLeads to generate responses', agents: [
-        { name: 'Follow Up Bot', active: false },
-      ], state: 'human' },
+      { name: 'Cold Texting', desc: 'SMS campaigns via BatchLeads to generate responses — Follow Up Bot handles nurture sequences', agents: [
+        { name: 'Follow Up Bot', active: true },
+      ], state: 'hybrid' },
       { name: 'PPL Lead Intake', desc: 'Leads purchased from Leadzolo, PropertyLeads, MotivatedSellers — auto-scored by Lead IQ', agents: [
         { name: 'PPL Refund Bot', active: true },
         { name: 'Lead IQ', active: true },
@@ -180,9 +180,9 @@ const phases = [
         { name: 'Transcript Processor', active: true },
         { name: 'AI Coach', active: true },
       ], state: 'hybrid' },
-      { name: 'Negotiation', desc: 'Counter-offers, justify numbers, close the gap — HUMAN JUDGMENT', agents: [
-        { name: 'AM Assistant', active: false },
-      ], state: 'human' },
+      { name: 'Negotiation', desc: 'Counter-offers, justify numbers, close the gap — HUMAN JUDGMENT. AM Assistant provides post-call summaries and next-step suggestions.', agents: [
+        { name: 'AM Assistant', active: true },
+      ], state: 'hybrid' },
       { name: 'Contract Signing', desc: 'Contract Bot generates purchase agreements automatically', agents: [
         { name: 'Contract Bot', active: true },
       ], state: 'hybrid' },
@@ -234,23 +234,23 @@ const phases = [
       { name: 'PPL Disputes', desc: 'PPL Refund Bot files disputes automatically for bad leads', agents: [
         { name: 'PPL Refund Bot', active: true },
       ], state: 'automated' },
-      { name: 'GHL Unread Alerts', desc: 'Alert team when they have unread messages past time threshold', agents: [
-        { name: 'Unread Message Alert', active: false },
-      ], state: 'human' },
+      { name: 'GHL Unread Alerts', desc: 'CRM Scanner detects unread conversations past time threshold and alerts team', agents: [
+        { name: 'Unread Message Alert', active: true },
+      ], state: 'automated' },
       { name: 'Cancellation Handling', desc: 'Cancellation Handler detects cancellations, triggers win-back sequences', agents: [
         { name: 'Cancellation Handler', active: true },
       ], state: 'automated' },
-      { name: 'Process Compliance', desc: 'Enforce rules (wrong # = delete, stage resets) — auto-flag violations', agents: [
-        { name: 'Process Compliance Bot', active: false },
-      ], state: 'human' },
+      { name: 'Process Compliance', desc: 'CRM Scanner enforces pipeline rules, flags SLA violations, detects stage anomalies', agents: [
+        { name: 'Process Compliance Bot', active: true },
+      ], state: 'hybrid' },
     ]
   },
   {
     id: 'close', title: '6. Post-Close & Market Intel', role: 'All Roles', color: 'close',
     steps: [
-      { name: 'Thank You & Reviews', desc: 'Send thank you, request Google review, ask for referrals', agents: [
-        { name: 'Post-Close Bot', active: false },
-      ], state: 'human' },
+      { name: 'Thank You & Reviews', desc: 'Post-Close Bot auto-sends thank you SMS, requests Google review, asks for referrals on deal close', agents: [
+        { name: 'Post-Close Bot', active: true },
+      ], state: 'automated' },
       { name: 'Market Watch', desc: 'Monitor market trends, comps, and pricing shifts in active areas', agents: [
         { name: 'Market Watch Bot', active: false },
       ], state: 'human' },
